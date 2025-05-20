@@ -111,6 +111,9 @@
   <img id="photo" src="your-photo.jpg" alt="我们合照" />
   <div id="message-box">点击下面按钮，看看我准备了多少情话送给你~</div>
   <button onclick="showLoveMessage()">点我开启甜蜜</button>
+  <div id="audio-control">
+    <button onclick="toggleMusic()">🎵 播放/暂停背景音乐</button>
+  </div>
 
   <div class="timeline">
     <h3>我们的纪念日</h3>
@@ -156,7 +159,6 @@
       }
     }
 
-    // 倒计时功能
     function updateCountdown() {
       const target = new Date('2025-12-31T00:00:00');
       const now = new Date();
@@ -169,45 +171,48 @@
       document.getElementById('countdown').innerText = `距离我们订婚还有???天`;
     }
 
-    // 彤彤语录逐条淡入打字
-    const quotes = [
-      "收留你呀", "我很喜欢你", "比你以为的更喜欢",
-      "告诉你了不要骄傲哦",
-      "爱你爱你", "想你", "我想你现在抱抱我",
-      "你到了那之后，每天吃什么饭、做了什么都要拍照告诉我",
-      "我喜欢这个东西，更喜欢愿意给我买的你"
-      "傻子,宝宝 亲爱的,世界上最好的男朋友,"
-      "我们会看对方看到烦的,以后还有很多年"
-      "我看到你喜欢我买的东西特别开心"
-    ];
-
-    function typeQuotes(index = 0) {
-      if (index >= quotes.length) return;
-      const container = document.getElementById("quotes");
-      const p = document.createElement("p");
-      p.className = "quote-line";
-      container.appendChild(p);
-
-      let i = 0;
-      function typeChar() {
-        if (i < quotes[index].length) {
-          p.textContent += quotes[index][i++];
-          setTimeout(typeChar, 50);
-        } else {
-          p.style.opacity = 1;
-          setTimeout(() => typeQuotes(index + 1), 800);
-        }
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.top = '100%';
+        container.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
       }
-      typeChar();
     }
 
-    // 初始化
+    function updateCountdown() {
+      const target = new Date('2025-12-31T00:00:00');
+      const now = new Date();
+      const diff = target - now;
+      if (diff <= 0) {
+        document.getElementById('countdown').innerText = '今天是我们的订婚日！';
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      document.getElementById('countdown').innerText = `距离我们订婚还有???天`;
+    }
+
     updateCountdown();
-    setInterval(updateCountdown, 1000 * 60 * 60); // 每小时更新
-    window.onload = () => {
-      typeQuotes();
-    };
+    setInterval(updateCountdown, 3600000);
+
+    let quoteIndex = 0;
+    function typeQuote() {
+      if (quoteIndex >= quotes.length) return;
+      const text = quotes[quoteIndex];
+      const element = document.getElementById("typed-text");
+      let i = 0;
+      element.innerHTML = "";
+
+      const interval = setInterval(() => {
+        element.innerHTML += text[i];
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          quoteIndex++;
+          setTimeout(typeQuote, 3000);
+        }
+      }, 100);
+    }
+
+    typeQuote();
   </script>
 </body>
 </html>
-
