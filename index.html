@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>100天的心动</title>
   <style>
     body {
@@ -61,8 +61,8 @@
         opacity: 0;
       }
     }
-    #message-box {
-      margin-top: 3rem;
+    #message-box, #timeline, #countdown, #quote-wall {
+      margin-top: 2rem;
       padding: 1rem;
       font-size: 1.2rem;
       color: #880e4f;
@@ -87,15 +87,24 @@
       height: auto;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
-    #countdown {
-      font-size: 1.1rem;
-      margin-top: 1.5rem;
-      color: #6a1b4d;
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 2s ease forwards;
     }
-    #music-tip {
-      font-size: 0.9rem;
-      margin-top: 1rem;
-      color: #6a1b4d;
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+    .typed-text {
+      display: inline-block;
+      border-right: 2px solid rgba(0, 0, 0, 0.75);
+      animation: blink 0.75s step-end infinite;
+    }
+    @keyframes blink {
+      50% {
+        border-color: transparent;
+      }
     }
   </style>
 </head>
@@ -103,26 +112,53 @@
   <h1>❤️ 100天的心动 ❤️</h1>
   <img id="photo" src="your-photo.jpg" alt="我们合照">
   <div id="message-box">点击下面按钮，看看我准备了多少情话送给你~</div>
-  <button onclick="showLoveMessage()">点我开启甜蜜</button>
+  <button onclick="handleClick()">点我开启甜蜜</button>
+  <div id="timeline">📅 2024年10月27日 我们第一次见面 ❤️<br>📅 2025年2月10日 正式在一起 ❤️<br>❤️ 中间有过小矛盾，我们慢慢磨合，越走越甜。</div>
   <div id="countdown"></div>
-  <div id="music-tip">点击任意位置可播放背景音乐 🎵</div>
+  <div id="quote-wall">
+    <h2>彤彤说过的话</h2>
+    <div id="typed-text" class="typed-text"></div>
+  </div>
   <div id="heart-container"></div>
-
-  <audio id="bgm" src="love-music.mp3" loop></audio>
+  <audio autoplay loop>
+    <source src="love-music.mp3" type="audio/mpeg">
+    你的浏览器不支持音乐播放。
+  </audio>
 
   <script>
     const messages = [
-  "从2025年2月10日到今天，已经整整100天啦~",
-  "这100天的每一天，我都比前一天更爱你一点。",
-  "520是我爱你，521是我愿意，全部都送给你~",
-  "不止是这100天，而是从今往后的每一天，我都想陪你一起走。",
-  "你是我生命中最特别的存在，从遇见你开始就没变过。",
-  "愿我们下一次纪念日，是一起牵手走进婚姻殿堂的日子。",
-  "爱你的浩，每天都在享受独一无二的幸福时光。",
-  "你笑的样子，是我每天最想守护的温柔。",
-  "和你在一起的每一天，都是我最开心的时光。",
-  "未来的每一个100天，我都想和你一起数着过。"
+      "从2025年2月10日到今天，已经100天啦~",
+      "100天的每一天，我都比前一天更爱你。",
+      "520我爱你，521我愿意，一起全都送给你。",
+      "不只是100天，而是每一个未来的日子，我都想和你一起走下去。",
+      "你是我遇见的最特别的存在，从未改变。",
+      "愿我们下一次纪念日，是牵着手去领证。",
+      "爱你的浩和你在一起的每一天，都是限量款的幸福。",
+      "你笑的样子，是我每天最想守护的温柔。",
+      "和你的每一天都是开心的"
     ];
+
+    const quotes = [
+      "收留你呀",
+      "我很喜欢你",
+      "比你以为的更喜欢",
+      "告诉你了不要骄傲哦（我的内心想法 我也是哦 爱你爱你）",
+      "想你",
+      "我想你现在抱抱我",
+      "你到了那之后，\n每天吃什么饭，做了什么都要拍照告诉我",
+      "我喜欢这个东西，更喜欢愿意给我买的你"
+    ];
+
+    let clickCount = 0;
+
+    function handleClick() {
+      showLoveMessage();
+      clickCount++;
+      if (clickCount === 10) {
+        alert("你找到了隐藏彩蛋！\n原来你这么喜欢我呀~ 😘");
+        createHearts(30);
+      }
+    }
 
     function showLoveMessage() {
       const msg = messages[Math.floor(Math.random() * messages.length)];
@@ -142,7 +178,6 @@
       }
     }
 
-    // 倒计时：下一个纪念日（订婚日）2025-12-31
     function updateCountdown() {
       const target = new Date('2025-12-31T00:00:00');
       const now = new Date();
@@ -152,21 +187,32 @@
         return;
       }
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      document.getElementById('countdown').innerText = `距离我们订婚还有???天`;
+      document.getElementById('countdown').innerText = `距离我们订婚还有 ${days} 天`;
     }
 
     updateCountdown();
-    setInterval(updateCountdown, 1000 * 60 * 60);
+    setInterval(updateCountdown, 3600000);
 
-    // 音乐播放控制：点击页面任意处触发
-    document.addEventListener('DOMContentLoaded', () => {
-      const audio = document.getElementById('bgm');
-      const tryPlay = () => {
-        audio.play().catch(() => {});
-        document.removeEventListener('click', tryPlay);
-      };
-      document.addEventListener('click', tryPlay);
-    });
+    let quoteIndex = 0;
+    function typeQuote() {
+      if (quoteIndex >= quotes.length) return;
+      const text = quotes[quoteIndex];
+      const element = document.getElementById("typed-text");
+      let i = 0;
+      element.innerHTML = "";
+
+      const interval = setInterval(() => {
+        element.innerHTML += text[i];
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          quoteIndex++;
+          setTimeout(typeQuote, 3000);
+        }
+      }, 100);
+    }
+
+    typeQuote();
   </script>
 </body>
 </html>
