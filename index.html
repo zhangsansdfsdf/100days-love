@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>100天的心动</title>
   <style>
     body {
@@ -92,6 +92,11 @@
       margin-top: 1.5rem;
       color: #6a1b4d;
     }
+    #music-tip {
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      color: #6a1b4d;
+    }
   </style>
 </head>
 <body>
@@ -100,22 +105,23 @@
   <div id="message-box">点击下面按钮，看看我准备了多少情话送给你~</div>
   <button onclick="showLoveMessage()">点我开启甜蜜</button>
   <div id="countdown"></div>
+  <div id="music-tip">点击任意位置可播放背景音乐 🎵</div>
   <div id="heart-container"></div>
-  <audio autoplay loop>
-    <source src="love-music.mp3" type="audio/mpeg">
-    你的浏览器不支持音乐播放。
-  </audio>
+
+  <audio id="bgm" src="love-music.mp3" loop></audio>
 
   <script>
     const messages = [
-      "从2025年3月10日到今天，已经100天啦~",
-      "100天的每一天，我都比前一天更爱你。",
-      "520我爱你，521我愿意，一起全都送给你。",
-      "不只是100天，而是每一个未来的日子，我都想和你一起走下去。",
-      "你是我遇见的最特别的存在，从未改变。",
-      "愿我们下一次纪念日，是牵着手去领证。",
-      "王浩和你在一起的每一天，都是限量款的幸福。",
-      "你笑的样子，是我每天最想守护的温柔。"
+  "从2025年2月10日到今天，已经整整100天啦~",
+  "这100天的每一天，我都比前一天更爱你一点。",
+  "520是我爱你，521是我愿意，全部都送给你~",
+  "不止是这100天，而是从今往后的每一天，我都想陪你一起走。",
+  "你是我生命中最特别的存在，从遇见你开始就没变过。",
+  "愿我们下一次纪念日，是一起牵手走进婚姻殿堂的日子。",
+  "爱你的浩，每天都在享受独一无二的幸福时光。",
+  "你笑的样子，是我每天最想守护的温柔。",
+  "和你在一起的每一天，都是我最开心的时光。",
+  "未来的每一个100天，我都想和你一起数着过。"
     ];
 
     function showLoveMessage() {
@@ -151,6 +157,16 @@
 
     updateCountdown();
     setInterval(updateCountdown, 1000 * 60 * 60);
+
+    // 音乐播放控制：点击页面任意处触发
+    document.addEventListener('DOMContentLoaded', () => {
+      const audio = document.getElementById('bgm');
+      const tryPlay = () => {
+        audio.play().catch(() => {});
+        document.removeEventListener('click', tryPlay);
+      };
+      document.addEventListener('click', tryPlay);
+    });
   </script>
 </body>
 </html>
