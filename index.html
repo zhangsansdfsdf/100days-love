@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
@@ -18,40 +18,18 @@
       color: #c2185b;
       margin-top: 2rem;
     }
-    button {
-      background-color: #f06292;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      font-size: 1rem;
-      border-radius: 20px;
-      cursor: pointer;
-      margin-top: 1.5rem;
-    }
-    button:hover {
-      background-color: #ec407a;
-    }
-    #photo {
-      margin-top: 1rem;
-      border-radius: 1rem;
-      max-width: 90%;
-      height: auto;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
-    #message-box, #countdown {
-      font-size: 1.2rem;
-      margin-top: 1rem;
-      color: #880e4f;
-    }
     #heart-container {
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
     }
     .heart {
       position: absolute;
-      width: 30px; height: 30px;
+      width: 30px;
+      height: 30px;
       background-color: red;
       transform: rotate(45deg);
       animation: floatUp 4s ease-in infinite;
@@ -60,49 +38,59 @@
     .heart::after {
       content: "";
       position: absolute;
-      width: 30px; height: 30px;
+      width: 30px;
+      height: 30px;
       background-color: red;
       border-radius: 50%;
     }
-    .heart::before { top: -15px; left: 0; }
-    .heart::after  { top: 0; left: -15px; }
-
+    .heart::before {
+      top: -15px;
+      left: 0;
+    }
+    .heart::after {
+      left: -15px;
+      top: 0;
+    }
     @keyframes floatUp {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-800px) scale(1.5); opacity: 0; }
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-800px) scale(1.5);
+        opacity: 0;
+      }
     }
-
-    .timeline {
-      margin-top: 2rem;
-      text-align: left;
-      max-width: 600px;
-      margin: 2rem auto;
+    #message-box {
+      margin-top: 3rem;
       padding: 1rem;
-      background: #fff5f8;
-      border-radius: 1rem;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      font-size: 1.2rem;
+      color: #880e4f;
     }
-    .timeline h3 {
-      color: #c2185b;
-    }
-    .timeline p {
-      margin: 0.5rem 0;
-    }
-
-    #quotes {
-      margin: 2rem auto;
-      max-width: 600px;
+    button {
+      background-color: #f06292;
+      border: none;
+      color: white;
+      padding: 10px 20px;
       font-size: 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-top: 2rem;
+    }
+    button:hover {
+      background-color: #ec407a;
+    }
+    #photo {
+      margin-top: 2rem;
+      border-radius: 1rem;
+      max-width: 90%;
+      height: auto;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    #countdown {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
       color: #6a1b4d;
-    }
-    .quote-line {
-      opacity: 0;
-      transition: opacity 1s;
-      margin: 0.5rem 0;
-    }
-
-    #audio-control {
-      margin-top: 1rem;
     }
   </style>
 </head>
@@ -111,23 +99,14 @@
   <img id="photo" src="your-photo.jpg" alt="我们合照" />
   <div id="message-box">点击下面按钮，看看我准备了多少情话送给你~</div>
   <button onclick="showLoveMessage()">点我开启甜蜜</button>
-  <div id="audio-control">
-    <button onclick="toggleMusic()">🎵 播放/暂停背景音乐</button>
-  </div>
-
-  <div class="timeline">
-    <h3>我们的纪念日</h3>
-    <p>📌 2024年10月27日 — 我们第一次见面</p>
-    <p>📌 2025年2月10日 — 确定了关系</p>
-    <p>📌 持子之手与子偕老宝宝❤❤❤</p>
-  </div>
-
   <div id="countdown"></div>
-  <div id="quotes"><strong>彤彤说过的话</strong></div>
   <div id="heart-container"></div>
 
-  <!-- 自动播放音乐 -->
-  <audio autoplay loop id="bgm" src="love-music.mp3"></audio>
+  <!-- 音乐播放 -->
+  <audio autoplay loop controls style="margin-top: 2rem;">
+    <source src="love-music.mp3" type="audio/mpeg" />
+    你的浏览器不支持音乐播放。
+  </audio>
 
   <script>
     const messages = [
@@ -138,7 +117,9 @@
       "你是我遇见的最特别的存在，从未改变。",
       "愿我们下一次纪念日，是牵着手去领证。",
       "爱你的浩和你在一起的每一天，都是限量款的幸福。",
-      "你笑的样子，是我每天最想守护的温柔。"
+      "你笑的样子，是我每天最想守护的温柔。",
+      "和你在一起的每一天，我都觉得很幸福很安心。",
+      "你是我最甜蜜的坚持，也是我最温柔的理由。"
     ];
 
     function showLoveMessage() {
@@ -159,25 +140,7 @@
       }
     }
 
-    function updateCountdown() {
-      const target = new Date('2025-12-31T00:00:00');
-      const now = new Date();
-      const diff = target - now;
-      if (diff <= 0) {
-        document.getElementById('countdown').innerText = '今天是我们的订婚日！';
-        return;
-      }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      document.getElementById('countdown').innerText = `距离我们订婚还有???天`;
-    }
-
-        heart.style.left = Math.random() * 100 + '%';
-        heart.style.top = '100%';
-        container.appendChild(heart);
-        setTimeout(() => heart.remove(), 4000);
-      }
-    }
-
+    // 倒计时：下一个纪念日（订婚日）2025-12-31
     function updateCountdown() {
       const target = new Date('2025-12-31T00:00:00');
       const now = new Date();
@@ -191,28 +154,7 @@
     }
 
     updateCountdown();
-    setInterval(updateCountdown, 3600000);
-
-    let quoteIndex = 0;
-    function typeQuote() {
-      if (quoteIndex >= quotes.length) return;
-      const text = quotes[quoteIndex];
-      const element = document.getElementById("typed-text");
-      let i = 0;
-      element.innerHTML = "";
-
-      const interval = setInterval(() => {
-        element.innerHTML += text[i];
-        i++;
-        if (i >= text.length) {
-          clearInterval(interval);
-          quoteIndex++;
-          setTimeout(typeQuote, 3000);
-        }
-      }, 100);
-    }
-
-    typeQuote();
+    setInterval(updateCountdown, 1000 * 60 * 60);
   </script>
 </body>
 </html>
