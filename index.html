@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>100天的心动</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffe4ec, #f8c3d4);
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #c2185b;
+      margin-top: 2rem;
+    }
+    #heart-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .heart {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: red;
+      transform: rotate(45deg);
+      animation: floatUp 4s ease-in infinite;
+    }
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: red;
+      border-radius: 50%;
+    }
+    .heart::before {
+      top: -15px;
+      left: 0;
+    }
+    .heart::after {
+      left: -15px;
+      top: 0;
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-800px) scale(1.5);
+        opacity: 0;
+      }
+    }
+    #message-box {
+      margin-top: 3rem;
+      padding: 1rem;
+      font-size: 1.2rem;
+      color: #880e4f;
+    }
+    button {
+      background-color: #f06292;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-top: 2rem;
+    }
+    button:hover {
+      background-color: #ec407a;
+    }
+    #photo {
+      margin-top: 2rem;
+      border-radius: 1rem;
+      max-width: 90%;
+      height: auto;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    #countdown {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+      color: #6a1b4d;
+    }
+  </style>
+</head>
+<body>
+  <h1>❤️ 100天的心动 ❤️</h1>
+  <img id="photo" src="your-photo.jpg" alt="我们合照">
+  <div id="message-box">点击下面按钮，看看我准备了多少情话送给你~</div>
+  <button onclick="showLoveMessage()">点我开启甜蜜</button>
+  <div id="countdown"></div>
+  <div id="heart-container"></div>
+  <audio autoplay loop>
+    <source src="love-music.mp3" type="audio/mpeg">
+    你的浏览器不支持音乐播放。
+  </audio>
+
+  <script>
+    const messages = [
+      "从2025年3月10日到今天，已经100天啦~",
+      "100天的每一天，我都比前一天更爱你。",
+      "520我爱你，521我愿意，一起全都送给你。",
+      "不只是100天，而是每一个未来的日子，我都想和你一起走下去。",
+      "你是我遇见的最特别的存在，从未改变。",
+      "愿我们下一次纪念日，是牵着手去领证。",
+      "王浩和你在一起的每一天，都是限量款的幸福。",
+      "你笑的样子，是我每天最想守护的温柔。"
+    ];
+
+    function showLoveMessage() {
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById('message-box').innerText = msg;
+      createHearts(15);
+    }
+
+    function createHearts(num) {
+      const container = document.getElementById('heart-container');
+      for (let i = 0; i < num; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.top = '100%';
+        container.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+      }
+    }
+
+    // 倒计时：下一个纪念日（订婚日）2025-12-31
+    function updateCountdown() {
+      const target = new Date('2025-12-31T00:00:00');
+      const now = new Date();
+      const diff = target - now;
+      if (diff <= 0) {
+        document.getElementById('countdown').innerText = '今天是我们的订婚日！';
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      document.getElementById('countdown').innerText = `距离我们订婚还有 ${days} 天`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000 * 60 * 60);
+  </script>
+</body>
+</html>
