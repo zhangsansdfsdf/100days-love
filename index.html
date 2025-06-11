@@ -180,20 +180,161 @@
   </style>
 </head>
 <body>
-
-  <h1>100天的心动</h1>
+  <h1>❤️ 100天的心动 ❤️</h1>
+  <img id="photo" src="your-photo.jpg" alt="我们合照" />
+  <div id="message-box">点击下面按钮，看看我准备了多少情话送给你~</div>
+  <button onclick="showLoveMessage()">点我开启甜蜜</button>
+  <button onclick="showQuotes()">纪念日墙</button>
+  <div id="countdown"></div>
   <div id="heart-container"></div>
 
-  <div id="message-box"></div>
-  <button onclick="showLoveMessage()">点我甜蜜一下</button>
-  <button onclick="showQuotes()">查看语录墙</button>
+  <!-- 背景音乐，无控制条，自动循环 -->
+  <audio autoplay loop muted id="bg-music" style="margin-top: 2rem;">
+    <source src="love-music.mp3" type="audio/mpeg" />
+    你的浏览器不支持音乐播放。
+  </audio>
 
-  <img id="photo" src="your-photo.jpg" alt="心动照片" />
+  <script>
+    // 音乐解除静音
+    window.addEventListener('click', () => {
+      const music = document.getElementById('bg-music');
+      if (music.muted) {
+        music.muted = false;
+        music.play();
+      }
+    }, { once: true });
 
-  <div id="countdown">距离特别的日子还有：100天</div>
+    // 情话数组
+    const messages = [
+      "从2025年2月10日到今天，已经100天啦~",
+      "100天的每一天，我都比前一天更爱你。",
+      "520我爱你，521我愿意，一起全都送给你。",
+      "不只是100天，而是每一个未来的日子，我都想和你一起走下去。",
+      "你是我遇见的最特别的存在，从未改变。",
+      "愿我们下一次纪念日，是牵着手去领证。",
+      "爱你的浩和你在一起的每一天，都是限量款的幸福。",
+      "你笑的样子，是我每天最想守护的温柔。",
+      "和你在一起的每一天，我都觉得很幸福很安心。",
+      "你是我最甜蜜的坚持，也是我最温柔的理由。"
+    ];
+
+    // 连续点击计数器
+    let clickCount = 0;
+    let lastClickTime = 0;
+    
+    // 检测连续点击
+    function checkSecretClick() {
+      const now = Date.now();
+      if (now - lastClickTime < 500) { // 500毫秒内算连续点击
+        clickCount++;
+        if (clickCount >= 10) {
+          showSecretMessage();
+          clickCount = 0;
+        }
+      } else {
+        clickCount = 1;
+      }
+      lastClickTime = now;
+    }
+    
+    // 显示隐藏特效
+    function showSecretMessage() {
+      const modal = document.getElementById('secret-modal');
+      modal.style.display = 'flex';
+      createHearts(50); // 大量爱心特效
+    }
+    
+    // 关闭隐藏特效
+    function closeSecretMessage() {
+      document.getElementById('secret-modal').style.display = 'none';
+    }
+
+    function showLoveMessage() {
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById('message-box').innerText = msg;
+      createHearts(15);
+      checkSecretClick(); // 检查是否是连续点击
+    }
+
+    function createHearts(num) {
+      const container = document.getElementById('heart-container');
+      for (let i = 0; i < num; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.top = '100%';
+        container.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+      }
+    }
+
+    // 倒计时：订婚日2025-12-31
+    function updateCountdown() {
+      const target = new Date('2025-12-31T00:00:00');
+      const now = new Date();
+      const diff = target - now;
+      if (diff <= 0) {
+        document.getElementById('countdown').innerText = '今天是我们的订婚日！';
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      document.getElementById('countdown').innerText = `距离我们订婚还有???天 会有那一天的一定会的`;
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000 * 60 * 60);
+
+    // 语录墙逻辑
+    const quotes = [
+      "收留你呀",
+      "我很喜欢你",
+      "比你以为的更喜欢",
+      "告诉你了不要骄傲哦",
+      "爱你爱你",
+      "想你",
+      "我想你现在抱抱我",
+      "你到了那之后，每天吃什么饭、做了什么都要拍照告诉我",
+      "我喜欢这个东西，更喜欢愿意给我买的你",
+      "傻子,宝宝 亲爱的,世界上最好的男朋友,",
+      "我们会看对方看到烦的,以后还有很多年",
+      "我看到你喜欢我买的东西特别开心"
+    ];
+
+    let quoteIndex = 0;
+    let quoteInterval = null;
+
+    function showQuotes() {
+      document.getElementById('quotes-modal').style.display = 'flex';
+      quoteIndex = 0;
+      showQuote(quoteIndex);
+      if (quoteInterval) clearInterval(quoteInterval);
+      quoteInterval = setInterval(() => {
+        quoteIndex = (quoteIndex + 1) % quotes.length;
+        showQuote(quoteIndex);
+      }, 3000);
+      checkSecretClick(); // 检查是否是连续点击
+    }
+
+    function showQuote(index) {
+      const quoteText = document.getElementById('quote-text');
+      quoteText.style.opacity = 0;
+      setTimeout(() => {
+        quoteText.textContent = quotes[index];
+        quoteText.style.opacity = 1;
+      }, 500);
+    }
+
+    function closeQuotes() {
+      document.getElementById('quotes-modal').style.display = 'none';
+      if (quoteInterval) {
+        clearInterval(quoteInterval);
+        quoteInterval = null;
+      }
+    }
+  </script>
 
   <!-- 语录墙弹窗 -->
   <div id="quotes-modal">
+    <h2>她的语录墙</h2>
     <div id="quote-text"></div>
     <button onclick="closeQuotes()">关闭</button>
   </div>
@@ -209,99 +350,5 @@
     </div>
   </div>
 
-  <script>
-    const messages = [
-      "你是我最甜蜜的坚持，也是我最温柔的理由。",
-      "遇见你，是我这辈子最美好的意外。",
-      "想和你一起走过每一个春夏秋冬。",
-      "你笑起来的样子，像阳光一样温暖。",
-      "有你在，世界都变得不一样了。"
-    ];
-
-    const quotes = [
-      "爱是生命中最美的奇迹。",
-      "陪你看尽世间繁华。",
-      "你是我心中的那道光。",
-      "想把全世界的美好都给你。",
-      "爱你，是我一生的承诺。"
-    ];
-
-    // 连续点击计数器
-    let clickCount = 0;
-    let lastClickTime = 0;
-
-    function checkSecretClick() {
-      const now = Date.now();
-      if (now - lastClickTime < 500) { // 500毫秒内算连续点击
-        clickCount++;
-        if (clickCount >= 10) {
-          showSecretMessage();
-          clickCount = 0;
-        }
-      } else {
-        clickCount = 1;
-      }
-      lastClickTime = now;
-    }
-
-    function createHearts(num) {
-      const container = document.getElementById('heart-container');
-      for (let i = 0; i < num; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.style.left = Math.random() * window.innerWidth + 'px';
-        heart.style.top = window.innerHeight + 'px';
-        heart.style.animationDelay = (Math.random() * 2) + 's';
-        container.appendChild(heart);
-        setTimeout(() => container.removeChild(heart), 4000);
-      }
-    }
-
-    function showLoveMessage() {
-      const msg = messages[Math.floor(Math.random() * messages.length)];
-      document.getElementById('message-box').innerText = msg;
-      createHearts(15);
-      checkSecretClick();
-    }
-
-    function showQuotes() {
-      let quoteIndex = 0;
-      const quoteText = document.getElementById('quote-text');
-      const modal = document.getElementById('quotes-modal');
-
-      function showQuote(index) {
-        quoteText.style.opacity = 0;
-        setTimeout(() => {
-          quoteText.innerText = quotes[index];
-          quoteText.style.opacity = 1;
-        }, 500);
-      }
-
-      showQuote(quoteIndex);
-      modal.style.display = 'flex';
-
-      const intervalId = setInterval(() => {
-        quoteIndex = (quoteIndex + 1) % quotes.length;
-        showQuote(quoteIndex);
-      }, 3000);
-
-      modal.querySelector('button').onclick = () => {
-        clearInterval(intervalId);
-        modal.style.display = 'none';
-      };
-
-      checkSecretClick();
-    }
-
-    function showSecretMessage() {
-      const modal = document.getElementById('secret-modal');
-      modal.style.display = 'flex';
-      createHearts(50);
-    }
-
-    function closeSecretMessage() {
-      document.getElementById('secret-modal').style.display = 'none';
-    }
-  </script>
 </body>
 </html>
