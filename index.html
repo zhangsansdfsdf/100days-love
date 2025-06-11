@@ -2,353 +2,307 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>100天的心动</title>
+  <title>和好吗？</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #ffe4ec, #f8c3d4);
-      font-family: 'Segoe UI', sans-serif;
+      background-color: #ffeef0;
       text-align: center;
-      overflow-x: hidden;
+      padding-top: 100px;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      position: relative;
     }
-    h1 {
-      font-size: 2.5rem;
-      color: #c2185b;
-      margin-top: 2rem;
+    #container {
+      position: relative;
+      height: 150px;
     }
-    #heart-container {
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: visible;
+      user-select: none;
+    }
+    #yesBtn {
+      background-color: #ff69b4;
+      color: white;
+      left: 40%;
+      top: 20px;
+    }
+    #noBtn {
+      background-color: #d3d3d3;
+      color: black;
+      left: 60%;
+      top: 20px;
+    }
+    /* 新增隐藏语录按钮样式 */
+    #hiddenQuoteBtn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      z-index: 9999;
+      user-select: none;
+      box-shadow: 0 0 8px #ff69b4;
+      display: none; /* 默认隐藏 */
+      transition: background-color 0.3s ease;
+    }
+    #hiddenQuoteBtn:hover {
+      background-color: #e0488e;
     }
     .heart {
       position: absolute;
-      width: 30px;
-      height: 30px;
-      background-color: red;
-      transform: rotate(45deg);
-      animation: floatUp 4s ease-in forwards;
-      opacity: 1;
+      color: red;
+      animation: fly 2s ease-out forwards;
+      font-size: 24px;
+      user-select: none;
       pointer-events: none;
-      border-radius: 4px;
     }
-    .heart::before,
-    .heart::after {
-      content: "";
+    @keyframes fly {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-200px) scale(1.5); }
+    }
+    .sweet-word {
       position: absolute;
-      width: 30px;
-      height: 30px;
-      background-color: red;
-      border-radius: 50%;
+      font-size: 20px;
+      color: #ff4081;
+      animation: floatText 6s linear forwards;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
     }
-    .heart::before {
-      top: -15px;
-      left: 0;
+    @keyframes floatText {
+      0% { opacity: 0; transform: translateY(0px) scale(1); }
+      10% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-300px) scale(1.2); }
     }
-    .heart::after {
-      left: -15px;
-      top: 0;
-    }
-    @keyframes floatUp {
-      0% {
-        transform: translateY(0) scale(1) rotate(45deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-800px) scale(1.5) rotate(45deg);
-        opacity: 0;
-      }
-    }
-    #message-box {
-      margin-top: 3rem;
-      padding: 1rem;
-      font-size: 1.2rem;
-      color: #880e4f;
-      min-height: 48px;
-    }
-    button {
-      background-color: #f06292;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      font-size: 1rem;
-      border-radius: 20px;
-      cursor: pointer;
-      margin: 1rem 0.5rem 0 0.5rem;
-      transition: background-color 0.3s;
-    }
-    button:hover {
-      background-color: #ec407a;
-    }
-    #photo {
-      margin-top: 2rem;
-      border-radius: 1rem;
-      max-width: 90%;
-      height: auto;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
-    #countdown {
-      font-size: 1.1rem;
-      margin-top: 1.5rem;
-      color: #6a1b4d;
-    }
-    /* 语录墙弹窗 */
-    #quotes-modal {
-      display: none;
+    /* 语录墙样式 */
+    #quoteWall {
       position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: #ffe4ec;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      height: 150px;
+      background: rgba(255, 105, 180, 0.2);
       border-radius: 15px;
-      box-shadow: 0 0 15px rgba(194, 24, 91, 0.8);
-      width: 80%;
-      max-width: 400px;
-      padding: 1rem 1.5rem;
-      z-index: 1000;
-      text-align: center;
-      color: #880e4f;
-      font-size: 1.2rem;
-      min-height: 150px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      padding: 20px;
+      color: #ff4081;
+      font-size: 18px;
+      font-family: 'Segoe UI', sans-serif;
+      box-shadow: 0 0 10px #ff69b4;
+      overflow: hidden;
+      cursor: pointer;
+      user-select: none;
+      display: none;
+      z-index: 9999;
     }
-    #quote-text {
-      opacity: 0;
-      transition: opacity 1s;
-      min-height: 4rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 1rem;
+    #quoteText {
       white-space: normal;
-      word-break: break-word;
+      line-height: 1.5;
     }
-    #quotes-modal button {
-      margin-top: 1.5rem;
-      background-color: #c2185b;
+    #toggleQuoteBtn {
+      position: fixed;
+      bottom: 180px;
+      right: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ff69b4;
       color: white;
       border: none;
-      padding: 8px 20px;
-      border-radius: 20px;
+      border-radius: 12px;
       cursor: pointer;
-      align-self: center;
-      transition: background-color 0.3s;
+      z-index: 9999;
+      user-select: none;
+      box-shadow: 0 0 8px #ff69b4;
+      transition: background-color 0.3s ease;
     }
-    #quotes-modal button:hover {
-      background-color: #9b1453;
-    }
-    /* 隐藏特效弹窗 */
-    #secret-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.7);
-      z-index: 2000;
-      justify-content: center;
-      align-items: center;
-    }
-    #secret-content {
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      padding: 2rem;
-      border-radius: 15px;
-      max-width: 80%;
-      text-align: center;
-      color: #880e4f;
-      font-size: 1.5rem;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    #secret-content button {
-      margin-top: 1.5rem;
-      background-color: #c2185b;
+    #toggleQuoteBtn:hover {
+      background-color: #e0488e;
     }
   </style>
 </head>
 <body>
-  <h1>❤️ 100天的心动 ❤️</h1>
-  <img id="photo" src="your-photo.jpg" alt="我们合照" />
-  <div id="message-box">点击下面按钮，看看我准备了多少情话送给你~</div>
-  <button onclick="showLoveMessage()">点我开启甜蜜</button>
-  <button onclick="showQuotes()">纪念日墙</button>
-  <div id="countdown"></div>
-  <div id="heart-container"></div>
+  <div id="container">
+    <button id="yesBtn">和好</button>
+    <button id="noBtn">不和好</button>
+  </div>
 
-  <!-- 背景音乐，无控制条，自动循环 -->
-  <audio autoplay loop muted id="bg-music" style="margin-top: 2rem;">
-    <source src="love-music.mp3" type="audio/mpeg" />
-    你的浏览器不支持音乐播放。
-  </audio>
+  <!-- 语录墙 -->
+  <div id="quoteWall" title="点击关闭语录墙">
+    <div id="quoteText"></div>
+  </div>
+  <button id="toggleQuoteBtn">显示语录墙</button>
+
+  <!-- 新增隐藏语录按钮 -->
+  <button id="hiddenQuoteBtn">隐藏语录</button>
+
+  <audio id="music" src="https://你的github链接.com/我爱你.MP3" preload="auto" autoplay loop></audio>
 
   <script>
-    // 音乐解除静音
-    window.addEventListener('click', () => {
-      const music = document.getElementById('bg-music');
-      if (music.muted) {
-        music.muted = false;
-        music.play();
-      }
-    }, { once: true });
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const music = document.getElementById("music");
+    const quoteWall = document.getElementById('quoteWall');
+    const quoteText = document.getElementById('quoteText');
+    const toggleQuoteBtn = document.getElementById('toggleQuoteBtn');
+    const hiddenQuoteBtn = document.getElementById('hiddenQuoteBtn');
 
-    // 情话数组
-    const messages = [
-      "从2025年2月10日到今天，已经100天啦~",
-      "100天的每一天，我都比前一天更爱你。",
-      "520我爱你，521我愿意，一起全都送给你。",
-      "不只是100天，而是每一个未来的日子，我都想和你一起走下去。",
-      "你是我遇见的最特别的存在，从未改变。",
-      "愿我们下一次纪念日，是牵着手去领证。",
-      "爱你的浩和你在一起的每一天，都是限量款的幸福。",
-      "你笑的样子，是我每天最想守护的温柔。",
-      "和你在一起的每一天，我都觉得很幸福很安心。",
-      "你是我最甜蜜的坚持，也是我最温柔的理由。"
+    let noClickCount = 0;
+
+    const sweetWords = [
+      "我会一直陪着你",
+      "你笑起来真的好可爱",
+      "我真的很爱你",
+      "没有你，我真的不行",
+      "你生气的时候也很美",
+      "你就是我心里的唯一",
+      "答应我，不要离开我，好吗？",
+      "你的微笑是我最大的幸福",
+      "世界再大，我只想和你在一起",
+      "谢谢你，愿意给我机会",
+      "有你，所有困难都变得容易"
     ];
 
-    // 连续点击计数器
-    let clickCount = 0;
-    let lastClickTime = 0;
-    
-    // 检测连续点击
-    function checkSecretClick() {
-      const now = Date.now();
-      if (now - lastClickTime < 500) { // 500毫秒内算连续点击
-        clickCount++;
-        if (clickCount >= 10) {
-          showSecretMessage();
-          clickCount = 0;
-        }
-      } else {
-        clickCount = 1;
-      }
-      lastClickTime = now;
-    }
-    
-    // 显示隐藏特效
-    function showSecretMessage() {
-      const modal = document.getElementById('secret-modal');
-      modal.style.display = 'flex';
-      createHearts(50); // 大量爱心特效
-    }
-    
-    // 关闭隐藏特效
-    function closeSecretMessage() {
-      document.getElementById('secret-modal').style.display = 'none';
-    }
-
-    function showLoveMessage() {
-      const msg = messages[Math.floor(Math.random() * messages.length)];
-      document.getElementById('message-box').innerText = msg;
-      createHearts(15);
-      checkSecretClick(); // 检查是否是连续点击
-    }
-
-    function createHearts(num) {
-      const container = document.getElementById('heart-container');
-      for (let i = 0; i < num; i++) {
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        heart.style.left = Math.random() * 100 + '%';
-        heart.style.top = '100%';
-        container.appendChild(heart);
-        setTimeout(() => heart.remove(), 4000);
-      }
-    }
-
-    // 倒计时：订婚日2025-12-31
-    function updateCountdown() {
-      const target = new Date('2025-12-31T00:00:00');
-      const now = new Date();
-      const diff = target - now;
-      if (diff <= 0) {
-        document.getElementById('countdown').innerText = '今天是我们的订婚日！';
-        return;
-      }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      document.getElementById('countdown').innerText = `距离我们订婚还有???天 会有那一天的一定会的`;
-    }
-    updateCountdown();
-    setInterval(updateCountdown, 1000 * 60 * 60);
-
-    // 语录墙逻辑
+    // 语录墙内容
     const quotes = [
-      "收留你呀",
-      "我很喜欢你",
-      "比你以为的更喜欢",
-      "告诉你了不要骄傲哦",
-      "爱你爱你",
-      "想你",
-      "我想你现在抱抱我",
-      "你到了那之后，每天吃什么饭、做了什么都要拍照告诉我",
-      "我喜欢这个东西，更喜欢愿意给我买的你",
-      "傻子,宝宝 亲爱的,世界上最好的男朋友,",
-      "我们会看对方看到烦的,以后还有很多年",
-      "我看到你喜欢我买的东西特别开心"
+      "我们会看对方看到烦的。",
+      "以后还有很多年。",
+      "你以后到了以后,每天吃的什么饭 做了什么都要拍照告诉我。",
+      "爱死你了。",
+      "我喜欢这个东西,更喜欢愿意给我买的你!!!。",
+      "比你以为的还要更喜欢。"
     ];
 
-    let quoteIndex = 0;
-    let quoteInterval = null;
+    let currentQuoteIndex = 0;
+    let typingTimer;
 
-    function showQuotes() {
-      document.getElementById('quotes-modal').style.display = 'flex';
-      quoteIndex = 0;
-      showQuote(quoteIndex);
-      if (quoteInterval) clearInterval(quoteInterval);
-      quoteInterval = setInterval(() => {
-        quoteIndex = (quoteIndex + 1) % quotes.length;
-        showQuote(quoteIndex);
-      }, 3000);
-      checkSecretClick(); // 检查是否是连续点击
+    function typeQuote(text, callback) {
+      let i = 0;
+      quoteText.textContent = '';
+      clearInterval(typingTimer);
+      typingTimer = setInterval(() => {
+        quoteText.textContent += text.charAt(i);
+        i++;
+        if (i > text.length) {
+          clearInterval(typingTimer);
+          if (callback) callback();
+        }
+      }, 100);
     }
 
-    function showQuote(index) {
-      const quoteText = document.getElementById('quote-text');
-      quoteText.style.opacity = 0;
-      setTimeout(() => {
-        quoteText.textContent = quotes[index];
-        quoteText.style.opacity = 1;
-      }, 500);
+    function showNextQuote() {
+      typeQuote(quotes[currentQuoteIndex], () => {
+        setTimeout(() => {
+          currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+          showNextQuote();
+        }, 2500);
+      });
     }
 
-    function closeQuotes() {
-      document.getElementById('quotes-modal').style.display = 'none';
-      if (quoteInterval) {
-        clearInterval(quoteInterval);
-        quoteInterval = null;
+    toggleQuoteBtn.addEventListener('click', () => {
+      if (quoteWall.style.display === 'none') {
+        quoteWall.style.display = 'block';
+        toggleQuoteBtn.textContent = '隐藏语录墙';
+        showNextQuote();
+      } else {
+        quoteWall.style.display = 'none';
+        toggleQuoteBtn.textContent = '显示语录墙';
+        clearInterval(typingTimer);
+      }
+    });
+
+    quoteWall.addEventListener('click', () => {
+      quoteWall.style.display = 'none';
+      toggleQuoteBtn.textContent = '显示语录墙';
+      clearInterval(typingTimer);
+    });
+
+    // 不和好按钮逻辑
+    noBtn.addEventListener("click", () => {
+      noClickCount++;
+
+      let x = Math.random() * (window.innerWidth - 100);
+      let y = Math.random() * (window.innerHeight - 100);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+
+      let scale = 1 + noClickCount * 0.2;
+      yesBtn.style.transform = `scale(${scale})`;
+
+      if (noClickCount === 3) {
+        alert("真的不要按了，我舍不得你。");
+      } else if (noClickCount === 5) {
+        alert("（此处插入你那段长长的真情告白，建议精简表达放入 alert，否则可改成新窗口显示）");
+      }
+
+      if (noClickCount === 6) {
+        hiddenQuoteBtn.style.display = 'block';
+      }
+    });
+
+    // 和好按钮逻辑
+    yesBtn.addEventListener("click", () => {
+      yesBtn.style.display = 'none';
+      noBtn.style.display = 'none';
+
+      generateHearts(30);
+      generateSweetTextMultiple(10);
+    });
+
+    function generateHearts(count) {
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          const heart = document.createElement("div");
+          heart.className = "heart";
+          heart.innerText = "❤";
+          heart.style.left = Math.random() * window.innerWidth + "px";
+          heart.style.top = Math.random() * window.innerHeight + "px";
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 2000);
+        }, i * 150); // 每隔150ms飞出一个心
       }
     }
+
+    function generateSweetTextMultiple(count) {
+      let created = 0;
+      let interval = setInterval(() => {
+        if (created >= count) {
+          clearInterval(interval);
+          return;
+        }
+        generateSweetText();
+        created++;
+      }, 600);
+    }
+
+    function generateSweetText() {
+      const word = document.createElement("div");
+      word.className = "sweet-word";
+      word.innerText = sweetWords[Math.floor(Math.random() * sweetWords.length)];
+      word.style.left = Math.random() * (window.innerWidth - 200) + "px";
+      word.style.top = Math.random() * (window.innerHeight - 100) + "px";
+      document.body.appendChild(word);
+      setTimeout(() => word.remove(), 6000);
+    }
+
+    // 隐藏语录按钮点击事件
+    hiddenQuoteBtn.addEventListener('click', () => {
+      const password = prompt("请输入密码，密码提示：我不爱你了");
+      if (password === "我不爱你了") {
+        alert("我很不要脸想用这句话留住你\n我知道你很讨厌别人骗你\n但是你说如果是你我不讨厌");
+      } else if (password !== null) {
+        alert("密码错误，请再试一次。");
+      }
+    });
   </script>
-
-  <!-- 语录墙弹窗 -->
-  <div id="quotes-modal">
-    <h2>她的语录墙</h2>
-    <div id="quote-text"></div>
-    <button onclick="closeQuotes()">关闭</button>
-  </div>
-
-  <!-- 隐藏特效弹窗 -->
-  <div id="secret-modal">
-    <div id="secret-content">
-      <h2>❤️ 张彤 ❤️</h2>
-      <p>我很喜欢你哦</p>
-      <p>真的真的很喜欢</p>
-      <p>每一天都比前一天更喜欢你</p>
-      <button onclick="closeSecretMessage()">我也喜欢你</button>
-    </div>
-  </div>
-
 </body>
 </html>
